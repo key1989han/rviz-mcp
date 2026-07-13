@@ -130,7 +130,7 @@ rviz-mcp tools list
 
 ## MergeOS bounties
 
-Star → claim issue → PR to **master** → MRG **25–200**.  
+Star → claim issue → PR to **master** → MRG **25–200**.
 See [mergeos](https://github.com/mergeos-bounties/mergeos).
 
 ---
