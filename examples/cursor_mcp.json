@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "rviz-mcp": {
+      "command": "rviz-mcp",
+      "args": [
+        "serve"
+      ],
+      "env": {
+        "RVIZ_MCP_MODE": "mock"
+      }
+    }
+  }
+}
