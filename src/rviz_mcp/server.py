@@ -148,5 +148,25 @@ def rviz_screenshot(path: str | None = None) -> str:
     return _j(get_backend().screenshot(path))
 
 
+@mcp.tool()
+def rviz_export_config() -> str:
+    """Export current mock RViz config for agents as a JSON snapshot.
+
+    Returns fixed_frame, view, displays, panels, and config_path — useful for
+    agents that need to inspect or replicate the current RViz state.
+    """
+    b = get_backend()
+    snap = getattr(b, "config_snapshot", None)
+    if callable(snap):
+        return _j(snap())
+    return _j(
+        {
+            "ok": False,
+            "error": "config_snapshot not available in this backend",
+            "backend": b.name,
+        }
+    )
+
+
 def run_stdio() -> None:
     mcp.run(transport="stdio")

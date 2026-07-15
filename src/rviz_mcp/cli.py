@@ -32,6 +32,7 @@ TOOL_NAMES = [
     "rviz_load_config",
     "rviz_save_config",
     "rviz_screenshot",
+    "rviz_export_config",
 ]
 
 
@@ -150,10 +151,28 @@ def call_cmd(
         "rviz_load_config": lambda: b.load_config(str(kv.get("path", "mock://default.rviz"))),
         "rviz_save_config": lambda: b.save_config(str(kv.get("path", "mock://saved.rviz"))),
         "rviz_screenshot": lambda: b.screenshot(kv.get("path")),
+        "rviz_export_config": lambda: b.config_snapshot()
+        if hasattr(b, "config_snapshot")
+        else {"ok": False, "error": "config_snapshot not available"},
     }
     if name not in dispatch:
         raise typer.BadParameter(f"unknown tool {name}")
     rprint(dispatch[name]())
+
+
+@app.command("export-config")
+def export_config_cmd(
+    pretty: bool = typer.Option(True, "--pretty/--compact", help="Pretty-print JSON."),
+) -> None:
+    """Export current mock RViz config as a JSON snapshot."""
+    b = get_backend()
+    snap = getattr(b, "config_snapshot", None)
+    if callable(snap):
+        data = snap()
+    else:
+        data = {"ok": False, "error": "config_snapshot not available in this backend"}
+    indent = 2 if pretty else None
+    typer.echo(json.dumps(data, indent=indent))
 
 
 @app.command("serve")

@@ -75,3 +75,17 @@ def test_config_snapshot_shape():
     assert snap["view"]["class"].startswith("rviz_default_plugins/")
     assert any(p["class"] == "rviz_common/Displays" for p in snap["panels"])
     assert snap["config_path"]
+
+
+def test_export_config_cli_dispatch():
+    """rviz_export_config in the call dispatch returns config_snapshot shape."""
+    from rviz_mcp.backend import get_backend
+    b = get_backend()
+    b.seed_demo()
+    b.set_fixed_frame("map")
+    result = b.config_snapshot()
+    assert result["ok"] is True
+    assert result["fixed_frame"] == "map"
+    assert "displays" in result
+    assert "panels" in result
+    assert "view" in result

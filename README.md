@@ -70,6 +70,39 @@ rviz-mcp serve
 
 ---
 
+## Mock display graph quickstart
+
+Run a full mock RViz2 display tree **without RViz2 installed** — useful for CI,
+documentation screenshots, and agent demos.
+
+```powershell
+# 1. Seed the default display tree (Grid + TF + RobotModel)
+rviz-mcp demo
+
+# 2. Inspect the mock config
+rviz-mcp status --json
+
+# 3. Export the full config snapshot for agents
+rviz-mcp export-config
+
+# 4. Run against the MCP server (Cursor / Claude / Grok)
+rviz-mcp serve
+# Then query the rviz://config resource
+```
+
+```bash
+# Non-PowerShell (bash / zsh)
+python -m rviz_mcp demo
+python -m rviz_mcp status --json
+python -m rviz_mcp export-config
+python -m rviz_mcp serve
+```
+
+The display graph includes class names, topics, and enable state — every field
+an agent needs to understand or replicate the layout.
+
+---
+
 ## Demo profiles
 
 The default mock seed includes Grid, TF, and RobotModel. The navigation profile
